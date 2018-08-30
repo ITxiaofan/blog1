@@ -2,9 +2,9 @@
 // 定义常量
 define('ROOT',dirname(__FILE__)."/../");
 // 实现自动加载
-function autoload(){
-    $path = str_replace('\\','/',$class);
-    require(ROOT.$path.'.php');
+function autoload($class){
+    // $path = str_replace('\\','/',$class);
+    require_once ROOT.str_replace('\\','/',$class).'.php';
 
 }
 spl_autoload_register('autoload');
