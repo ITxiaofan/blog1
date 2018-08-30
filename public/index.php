@@ -13,7 +13,11 @@ spl_autoload_register('autoload');
 
 if(isset($_SERVER['PATH_INFO'])){
     $pathInfo = $_SERVER['PATH_INFO'];
+    // 根据/转成数组
     $pathInfo = explode('/',$pathInfo);
+    // 得到控制器和方法名
+    $controller = ucfirst($pathInfo[1]).'Controller';
+    $action = $pathInfo[2];
 
 }else{
     // 默认控制器和方法
@@ -28,8 +32,9 @@ $_C->$action();
 
 // 加载视图
 function view($viewFileName,$data=[]){
+    // extract可以把数组解压成变量
     extract($data);
-    $path = str_replace('.','/',$viewFileName);
+    $path = str_replace('.','/',$viewFileName).'.html';
     // 加载视图
     require(ROOT.'views/'.$path);
 }
