@@ -1,12 +1,16 @@
 <?php
 namespace models;
-class User{
-    public function getName(){
-        return '铎铎';
-    }
-    function add(){
-        $this->prepare("insert into users (email,password) values ('1724940950@qq.com')");
+
+use PDO;
+
+class User extends Base
+{
+    public function add($email,$password)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO users (email,password) VALUES(?,?)");
+        return $stmt->execute([
+                                $email,
+                                $password,
+                            ]);
     }
 }
-
-?>
