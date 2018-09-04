@@ -9,9 +9,10 @@ class Base {
     public function __construct()
     {
         if(self::$pdo === null){
+            $config = config('db');
              // 取日志的数据
-            self::$pdo = new PDO('mysql:host=127.0.0.1;dbname=blog', 'root', '123456');
-            self::$pdo->exec('SET NAMES utf8');
+            self::$pdo = new \PDO('mysql:host='.$config['host'].';dbname='.$config['dbname'], $congfig['user'], $config['pass']);
+            self::$pdo->exec('SET NAMES '.$config['charset']);
         }
        
     }

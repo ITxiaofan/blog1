@@ -34,8 +34,6 @@ class BlogController
         $id = (int)$_GET['id'];
 
         $blog = new Blog;
-
-        // 把浏览量+1，并输出（如果内存中没有就查询数据库，如果内存中有直接操作内存）
         echo $blog->getDisplay($id);
         
     }

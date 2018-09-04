@@ -3,13 +3,6 @@ namespace controllers;
 
 // 引入模型类
 use models\User;
-<<<<<<< HEAD
-class UserController{
-    public function register(){
-        view('user.add');
-    }
-    public function hello(){
-=======
 
 class UserController
 {
@@ -21,7 +14,6 @@ class UserController
 
     public function hello()
     {
->>>>>>> pdo-test
         // 取数据
         $user = new User;
         $name = $user->getName();
@@ -79,14 +71,4 @@ class UserController
         echo 'ok';
 
     }
-<<<<<<< HEAD
-    function store(){
-        // 接收表单
-        $email = $_POST['email'];
-        $password = md5($_POST['password']);
-    }
-   
 }
-=======
-}
->>>>>>> pdo-test
