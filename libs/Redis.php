@@ -1,8 +1,14 @@
 <?php
 namespace libs;
 class Redis{
-    public function __construct()
-    {
+    private $redis;
+
+    private function __cloone(){}
+
+    private function __construct(){} 
+
+    public  static function getInstance(){
+        
         if(self::Redis===null){
             // 连接 Redis
              $redis = new \Predis\Client([
@@ -12,7 +18,5 @@ class Redis{
             ]);
         }
         return self::$redis;
-
-        
-    }     
+    }
 }

@@ -157,11 +157,7 @@ class Blog extends Base
         $key = "blog-{$id}";
 
         // 连接 Redis
-        $redis = new \Predis\Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 32768,
-        ]);
+        $redis = \libs\Redis::getInstance();
 
         // 判断 hash 中是否有这个键，如果有就操作内存，如果没有就从数据库中取
         // hexists：判断有没有键
@@ -191,11 +187,7 @@ class Blog extends Base
     {
         // 1. 先取出内存中所有的浏览量
         // 连接 Redis
-        $redis = new \Predis\Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 32768,
-        ]);
+        $redis = \libs\Redis::getInstance();
 
         $data = $redis->hgetall('blog_displays');
 
