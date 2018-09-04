@@ -1,8 +1,6 @@
 <?php
 namespace models;
 
-
-
 class Blog extends Base
 {    
     // 搜索日志
