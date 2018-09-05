@@ -1,4 +1,9 @@
 <?php
+// 设置SESSION保存
+//使用redis保存session
+ini_set('session.save_handeler','redis');
+ini_set('session.save_path','tcp://127.0.0.1:6379?database=3');
+session_star();
 // 定义常量
 define('ROOT', dirname(__FILE__) . '/../');
 
