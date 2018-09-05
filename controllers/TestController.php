@@ -8,12 +8,7 @@ class TestController
         // 注册成功
 
         // 发邮件
-        $redis = new \Predis\Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 32768,
-        ]);
-
+        $redis = \libs\Radis::getInstance();
         // 消息队列的信息
         $data = [
             'email' => 'fortheday@126.com',

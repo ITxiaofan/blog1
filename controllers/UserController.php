@@ -42,7 +42,8 @@ class UserController
         {
             die('注册失败！');
         }
-
+        $mail = new \libs\Mail;
+        $content = '恭喜您，注册成功！';
         // 3. 把消息放到队列中
 
         // 从邮箱地址中取出姓名 
@@ -60,11 +61,7 @@ class UserController
         $message = json_encode($message);
 
         // 放到队列中
-        $redis = new \Predis\Client([
-            'scheme' => 'tcp',
-            'host'   => '127.0.0.1',
-            'port'   => 32768,
-        ]);
+        $redis = \libs\Radis::getInstance();
 
         $redis->lpush('email', $message);
 
