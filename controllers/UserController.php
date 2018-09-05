@@ -6,6 +6,24 @@ use models\User;
 
 class UserController
 {
+    public function login(){
+        // 接收传过来的数据
+        $email = $_POST['email'];
+        $password = md5($_POST['password']);
+        $user = new \models\User;
+        if($user->login($email,$password)){
+            die('登录成功!');
+        }else{
+            die('用户名和密码错误！');
+
+        }
+        view('users.login');
+    }
+    public function logout(){
+        // 清空session
+        $_SESSION=[];
+        die('退出成功！');
+    }
     public function register()
     {
         // 显示视图
