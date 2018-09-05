@@ -106,3 +106,29 @@ function config($name){
     }
     return $config[$name];
 }
+function redirect($route){
+    header('Location:'.$route);
+    exit;
+}
+function back(){
+    redirect($_SESSION['HTTP_REFREER']);
+}
+
+function message($message,$type,$url,$seconds = 5){
+    if($type == 0){
+        echo "<script>alert('$message');localhost.href='{$url}';</script>";
+        exit;
+
+    }else if($type == 1){
+        view ('common.success',[
+            'message' =>$message,
+            'url' => $url,
+            'seconds'=>$seconds
+        ]);
+    }else if($type == 2){
+        // 把消息保存到session中
+        $_SESSION['_MESS_'] = $message;
+        // 跳转到下一个页面
+        redirect($url);
+    }
+}

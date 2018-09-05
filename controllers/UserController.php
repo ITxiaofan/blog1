@@ -24,6 +24,20 @@ class UserController
         $_SESSION=[];
         die('退出成功！');
     }
+    public function dologin(){
+        // 接收表单
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        // 使用模型登录
+        $user = new User;
+        if($user->login($email,$password)){
+            message('登陆成功！',2,'/blog/index');
+
+
+        }else{
+            message('账号或密码错误！',1,'/user/login');
+        }
+    }
     public function register()
     {
         // 显示视图
@@ -83,7 +97,8 @@ class UserController
 
         $redis->lpush('email', $message);
 
-        echo 'ok';
+        // echo 'ok';
+        redirect('/user/login');
 
     }
 }

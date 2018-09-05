@@ -15,12 +15,14 @@
             color: rgb(64, 117, 214);
             border-radius: 5px;
         }
-        .right{
+
+        .right {
             float: right;
             margin-top: -44px;
-            
+
         }
-        .right a{
+
+        .right a {
             text-decoration-line: none;
             color: rgb(17, 69, 165);
             font-size: 20px;
@@ -35,13 +37,29 @@
         <a href="/">首页</a>
         <a href="/blogs/index">日志列表</a>
         <?php if(isset($_SESSION['id'])): ?>
-            <?=$_SESSION['$email']?>
-        <?php else: ?>
-        <a href="/user/register">注册</a>
-        <a href="/user/login">登录</a>
+        <?=$_SESSION['$email']?>
+            <?php else: ?>
+            <a href="/user/register">注册</a>
+            <a href="/user/login">登录</a>
     </div>
     <?php endif; ?>
     <hr>
 </body>
 
 </html>
+<?php if(isset($_SESSION['_MESS_'])):?>
+<div id="_mess_">
+    <?=$_SESSION['_MESS_']?>
+</div>
+<script>
+    var m = document.getElementById('_mess_');
+    var s = 3;
+    var si = setInterval(function () {
+        s--;
+        if (s == 0) {
+            m.style.display = 'none';
+            clearInterval(si);
+        }
+    }, 1000);
+</script>
+<?php endif; ?>
