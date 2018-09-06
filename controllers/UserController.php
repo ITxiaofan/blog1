@@ -101,4 +101,7 @@ class UserController
         redirect('/user/login');
 
     }
+    public function create(){
+        view('blogs.create');
+    }
 }

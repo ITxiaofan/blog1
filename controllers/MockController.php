@@ -37,4 +37,15 @@ class MockController
         }
         return $b;
     }
+    public function users(){
+        $pdo = new PDO('mysql:host=127.0.0.1;dbname=blogs','root','123456');
+        $pdo->exec('set names utf8');
+        $pdo->exec('TRUNCATE users');
+        for($i=0;$i<20;$i++){
+            $email  = rand(50000,999999999).'@126.com';
+            $password = md5('123123');
+            $pdo->exec("INSERT INTO users (email,password) VALUES('$email','$password')");
+            
+        }
+    }
 }

@@ -43,4 +43,13 @@ class BlogController
         $blog = new Blog;
         $blog->displayToDb();
     }
+    public function store(){
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $is_show = $_POST['is_show'];
+
+        $blog->add($title,$content,$is_show);
+        // 跳转
+        message('发表成功',2,'/blog.index');
+    }
 }
