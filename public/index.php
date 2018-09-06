@@ -132,3 +132,6 @@ function message($message,$type,$url,$seconds = 5){
         redirect($url);
     }
 }
+function e ($content){
+    return htmlspecialchars($content);
+}
