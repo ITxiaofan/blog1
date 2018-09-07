@@ -7,7 +7,7 @@ class Blog extends Base
     public function search()
     {
         // 设置的 $where
-        $where = 1;
+        $where = 'user_id'.$_SESSION['id'];
 
         // 放预处理对应的值
         $value = [];
@@ -196,5 +196,49 @@ class Blog extends Base
             $sql = "UPDATE blogs SET display={$v} WHERE id = {$id}";
             self::$pdo->exec($sql);
         }
+    }
+    public function delete($id){
+        // 只能删除自己的日志
+        $stmt = self::$pdo->prepare('DELETE FROM blogs WHERE id = ? AND user_id=?');
+        $stmt->execute([
+            $id,
+            $_SESSION['id'],
+        ]);
+    }
+    public function find($id){
+        $stmt = self::$pdo->prepare('SELECT * FROM blogs where id = ?');
+        $stmt->execute([
+            $id
+        ]);
+        // 取出数据
+        return $stmt->fetch();
+    }
+    public function update($title,$content,$is_show,$id){
+        $stmt = self::$pdo->prepare("UPDATE blogs SET title=?,content=?,is_show=? WHERE id=?");
+        $ret = $stmt->execute([
+            $title,
+            $content,
+            $is_show,
+            $id,
+        ]);
+    }
+    // 为末一个日志生成静态页面
+    public function makerHtml($id){
+        // 取出日志的信息
+        $blog = $this->find($iid);
+        // 打开缓冲区 并且加载视图到缓冲区
+        ob_start();
+        view('blogs.content',[
+            'blog'=>$blog,
+        ]);
+        // 从缓冲区中取出视图并写到静态页中
+        $str = ob_get_clean();
+        file_put_contents(ROOT.'public/contents/'.$id.'.html',$str);
+
+
+    }
+    // 删除静态页
+    public function deleteHtml($id){
+        @unclink(ROOT.'/public/contents/'.$id.'.html');
     }
 }

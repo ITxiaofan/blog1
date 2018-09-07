@@ -6,21 +6,22 @@
 </head>
 <body>
     <?php view('commit.nav') ?>
-    <h1>添加日志</h1>
-    <form action="/blog/store" methos="post">
+    <h1>修改日志</h1>
+    <form action="/blog/update" methos="post">
         <input type="hidden" name="_token" value="<?=csrf()>">
+        <input type="hidden" name="id" value="<?=$data['id']?>">
         <div>
             标题：
-            <input type="text" name="title">
+            <input type="text" name="title" value="<?=$data['title']?>">
         </div>
         <div>
             内容：
-            <textarea placeholder="Balabala" id="editor" autofocus></textarea>
+            <textarea name="content" id="content"><?=$data['content']?></textarea>
         </div>
         <div>
             是否公开
-            <input type="radio" name="is_show" value="1" checked>公开
-            <input type="radio" name="is_show" value="0">私有
+            <input type="radio" name="is_show" value="1" <?php if($data['is_show']==1) echo 'checked'?>>公开
+            <input type="radio" name="is_show" value="0" <?php if($data['is_show']==0) echo 'checked'?>>私有
         </div>
         <div>
             <input type="submit" value="发表日志">
@@ -67,7 +68,7 @@
             leaveConfirm: '文件上传中，真要离开吗？'
         }
     });
-    var editor = new Simditor({
-        textarea:$('#editor')
-    });
+    // var editor = new Simditor({
+    //     textarea:$('#editor')
+    // });
     </script>

@@ -39,9 +39,24 @@
     $.ajax({
         type: "GET",
         url: url,
+        dataType:'json',
         success: function (data) {
             // 把返回的浏览量放到页面
             $("#display").html(data);
+
+            var html = '<a href="/">首页</a>';
+            // 判断登录
+            if(data.email == ''){
+                html += `<a href="/user/register">注册</a>
+                        <a href="/user/login">登录</a>`;
+            }
+            else{
+               html += data.email + ` <a href="/blog/index">日志列表</a> 
+                      <a href="/blog/create">发表日志</a> 
+                      <a href="/user/login">退出</a>`;
+            }
+             //获取id=menu的div 并把按钮放进去
+                $("#menu").html(html);
         }
     });
 
