@@ -5,6 +5,19 @@ use PDO;
 
 class User extends Base
 {
+    // 为用户增加金额
+    public function addMoney($money, $userId)
+    {
+        $stmt = self::$pdo->prepare("UPDATE users SET money=money+? WHERE id=?");
+        $stmt->execute([
+            $money,
+            $userId
+        ]);
+        // 更新 SESSION 中的余额
+        $_SESSION['money'] += $money;
+    }
+    // 为用户增加金额
+
     public function add($title,$content,$is_show)
     {
         $stmt = self::$pdo->prepare("INSERT INTO blogs(title,content,is_show,user_id) VALUES(?,?,?,?)");
@@ -35,6 +48,7 @@ class User extends Base
         if($user){
             $_SESSION['id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
+            $_SESSION['money'] = $user['money'];
             return TRUE;
         }else{
             return FALSE;

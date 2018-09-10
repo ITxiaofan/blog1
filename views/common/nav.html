@@ -36,6 +36,9 @@
     <div class="right">
         <a href="/">首页</a>
         <a href="/blogs/index">日志列表</a>
+        <a href="/user/orders">充值列表</a>
+        <a href="/user/charge">充值</a>
+        （ <span style="color:#F00;font-weight:bold;"><?=$_SESSION['money']?></span> 元）
         <?php if(isset($_SESSION['id'])): ?>
         <?=$_SESSION['$email']?>
             <?php else: ?>

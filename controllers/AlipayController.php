@@ -20,17 +20,56 @@ class AlipayController{
         ];
     // 发起支付
     public function pay(){
-        $order = [
-            // 本地订单
-            'out_trade_no' =>time(),
-            // 支付金额
-            'total_amount' => '0.01',
-            // 支付标题
-            'subject' =>'test subject',
+        // 接收订单编号
+        $sn = $_POST['sn'];
+        // 取出订单信息
+        $order = new \models\Order;
+        $data = $order->findBySn($sn);
 
-        ];
-        $alipay = Pay::alipay($this->config)->web($order);
-        $alipay->send();
+        if($data['status'] == 0){
+            $order->setPaid($data->out_trade_no);
+            // 更新用户余额
+            $user = new \models\User;
+            $user->addMoney($orderInfo['money'],$orderInfo['user_id']);
+
+            //跳转到支付宝
+            $alioay = Pay::alipay($this->config)->web([
+                
+                'out_trade_no' =>$sn,
+                
+                'total_amount' => $data['money'],
+                // 支付标题
+                'subject' =>'智聊系统用户充值-'.$data['money'].'元',
+            ]);
+            $alipay->send();
+
+        }
+        else{
+            die('订单状态不允许支付~');
+        }
+    }
+    public function notify(){
+        $alipay = Pay::alipay($this->config);
+        try{
+            $data = $alipay->verify();
+            // 判断支付状态
+            if($data->trade_status == 'TRADE_SUCCESS' || $data->trade_status == 'TRADE_FINISHED')
+            {
+                // 更新订单状态
+                $order = new \models\Order;
+                // 获取订单信息
+                $orderInfo = $order->findBySn($data->out_trade_no);
+                // 如果订单的状态为未支付状态 ，说明是第一次收到消息，更新订单状态 
+                if($orderInfo['status'] == 0)
+                {
+                    // 设置订单为已支付状态
+                    $order->setPaid($data->out_trade_no);
+                }
+            }
+        }catch(\Exception $e){
+            die('非法信息');
+        }
+        $alipay->success()->send();
     }
     public function return (){
         $data = Pay::alipay($this->config)->verify();
