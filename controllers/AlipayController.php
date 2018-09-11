@@ -27,11 +27,19 @@ class AlipayController{
         $data = $order->findBySn($sn);
 
         if($data['status'] == 0){
-            $order->setPaid($data->out_trade_no);
+            //开启食物
+            $order->startTrans();
+           $ret1 = $order->setPaid($data->out_trade_no);
             // 更新用户余额
             $user = new \models\User;
-            $user->addMoney($orderInfo['money'],$orderInfo['user_id']);
-
+            $ret2 = $user->addMoney($orderInfo['money'],$orderInfo['user_id']);
+            if($ret1 && $ret2){
+                $order->commit();
+                
+            }else{
+                $order->rollback();
+                
+            }
             //跳转到支付宝
             $alioay = Pay::alipay($this->config)->web([
                 

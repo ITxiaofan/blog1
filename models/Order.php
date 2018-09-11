@@ -5,7 +5,7 @@ class Order extends Base{
     //设置订单已支付的状态
     public function setPaid($sn){
         $stmt = self::$pdo->prepare("UPDATE orders SET status=1,pay_time=now() WHERE sn=?");
-        $stmt->execute([
+        return $stmt->execute([
             $sn
         ]);
     }
