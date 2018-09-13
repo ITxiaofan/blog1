@@ -6,6 +6,63 @@ use models\User;
 use models\Order;
 class UserController
 {
+    public function uploadbig(){
+        $count =  $_POST['count'];
+        $i = $_POST['i'];
+        $size = $_POST['size'];
+        $img = $_FILES['img'];
+
+        // 把每个图片保存到服务器中
+        move_uploaded_file($img['tmp_name'],ROOT.'tmp/'.$i);
+
+        $redis = \libs\Redis::make();
+        $uploadedCount = $redis->incr('conn_id');
+        
+        if($uploadedCount == $count){
+            $fp = fopen(ROOOT.'public.uploads/big/'.$name.'png','a');
+            // 循环所有的分片
+            for($i=0;$i<$count;$i++){
+                fwrite($fp,file_get_contents(ROOT.'tmp/'.$i));
+                // 删除第i号文件
+                unlink(ROOT.'tmp/'.$i);
+            }
+            // 关闭文件
+            fclose($fp);
+            // 从redis中删除这个文件对应的编号这个位置
+            $redis->del($name);
+
+        }
+    }
+    public function uploadall(){
+        echo "<pre>";
+        var_dump($_FILES);
+        // 先创建目录
+        $root = ROOT.'public/uploads/';
+        // 获取 今天日期 
+        $date = date('Ymd');
+        if(!is_dir($root.$date)){
+            // 创建目录
+            mkdir($root,$date,0777);
+        }
+        foreach ($_FILES['images'] as $k => $v){
+            $name = md5(time().rand(1,9999));
+            $ext = strrchr($v,'.');
+            $name = $name.$ext;
+            // 根据name的下标找到对应的文件
+            move_uploaded_file($_FILES['avatar']['tmp_name'][$k],$root.$date.'/'.$name);
+            echo $root.$date.'/'.$name.'<hr>';
+        } 
+    }
+    public function album(){
+        view('user.album');
+    }
+    public function setavatar(){
+        $upload = \libs\Uploader::make();
+        $path = $upload->upload('avatar','avatar');
+    }
+    public function avatar(){
+        view('users.avatar');
+    }
     public function docharge(){
         // 生成订单
         $money = $_POST['money'];

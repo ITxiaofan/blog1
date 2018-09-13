@@ -5,6 +5,51 @@ use models\Blog;
 
 class BlogController
 {
+    public function makeExcel(){
+        // 获取当前标签页
+        $spreadsheet = new Spreadsheet();
+        // 获取当前工作
+        $sheet = $spreadsheet->getActiveSheet();
+        // 设置第一行内容
+        $sheet->setCellValue('A1','标题');
+        $sheet->setCellValue('B1','内容');
+        $sheet->setCellValue('C1','发表时间');
+        $sheet->setCellValue('D1','是否公开');
+        
+        // 取出数据库中的日志
+        $model = new \libs\Blog;
+        // 获取最新的20个日志
+        $blogs = $model->getNew();
+        foreach($blogs as $v){
+            $sheet->setCellValue('A'.$i,$v['title']);
+            $sheet->setCellValue('B'.$i,$v['content']);
+            $sheet->setCellValue('C'.$i,$v['created_at']);
+            $sheet->setCellValue('D'.$i,$v['is_show']);
+            $i++;
+        }
+        // 生成excel文件
+        $writer = new Xlsx($spreadsheet);
+        $write->save(ROOT . 'excel/'.$date.'.xlsx');
+        
+        // 下载
+        // 调用header函数设置协议头，告诉浏览器开始下载文件
+        // 下载文件路径
+        $file = 'xxxx';
+        // 下载时文件名
+        $fileName = 'xxxx';
+            
+        //告诉浏览器这是一个文件流格式的文件    
+        Header ( "Content-type: application/octet-stream" ); 
+        //请求范围的度量单位  
+        Header ( "Accept-Ranges: bytes" );  
+        //Content-Length是指定包含于请求或响应中数据的字节长度    
+        Header ( "Accept-Length: " . filesize ( $file ) );  
+        //用来告诉浏览器，文件是可以当做附件被下载，下载后的文件名称为$file_name该变量的值。
+        Header ( "Content-Disposition: attachment; filename=" . $fileName );    
+            
+        // 读取并输出文件内容
+        readfile($file);
+    }
     // 删除日志
     public function delete(){
         $id = $_POST['id'];
