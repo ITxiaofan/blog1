@@ -7,7 +7,27 @@
         <?=$blog['title']?>
     </title>
 </head>
-
+<style>
+    .agree-list {
+        border: 1px solid skyblue;
+        padding: 0;
+        text-align: center;
+    }
+    .avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 1px solid skyblue;
+        padding: 5px;
+        margin-left: 20px;
+    }
+    .agree-list h3 {
+        padding: 0;
+        margin-top: 0;
+        background-color: #EEE;
+        padding: 5px;
+    }
+    </style>
 <body>
     <?php view('common.nav')?>
     <h1>
@@ -19,6 +39,10 @@
     <p>
         <?=$blog['content']?>
     </p>
+    <div class="agree-list">
+        <h3>点赞列表</h3>
+        <div id="avatar-list"></div>
+    </div>
     <?php view('common.footer')?>
 </body>
 
@@ -57,6 +81,25 @@
             }
              //获取id=menu的div 并把按钮放进去
                 $("#menu").html(html);
+        }
+    });
+    $.ajax({
+        type:"GET",
+        url:"/blog/agreements_list?id="+id,
+        dataType:"json",
+        success:function(data)
+        {
+            if(data.status_code == 200)
+            {
+                var html = '';
+                for(var i=0; i<data.data.length; i++)
+                {
+                    var avatar = data.data[i].avatar ? data.data[i].avatar : '/images/avatar.jpg';
+                    html += '<img title="'+data.data[i].email+'" class="avatar" src="'+avatar+'" alt="">';
+                }
+                // 把字符串放到页面
+                $("#avatar-list").html( html )
+            }
         }
     });
 

@@ -5,6 +5,17 @@ use models\Blog;
 
 class BlogController
 {
+    public function agreements_list(){
+        $id = $_GET['id'];
+        // 获取这个日志所有点赞的用户
+        $model = new \models\Blog;
+        $data = $modle->agreeList($id);
+        // 转成JSON返回
+        echo json_encode([
+            'status_code' => 200,
+            'data' => $data,
+        ]);
+    }
     public function makeExcel(){
         // 获取当前标签页
         $spreadsheet = new Spreadsheet();

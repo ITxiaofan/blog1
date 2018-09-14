@@ -38,6 +38,7 @@
         <a href="/blogs/index">日志列表</a>
         <a href="/user/orders">充值列表</a>
         <a href="/user/charge">充值</a>
+        <img style="width:50px;height:50px;border-radius: 50%;vertical-align: middle;" src="<?=$_SESSION['avatar']?>" />
         <?=$_SESSION['email'] ?>]
         
         <?php if(isset($_SESSION['id'])): ?>
@@ -50,6 +51,7 @@
                 $("#span-money").load("/user/money");
             });
         </script>
+
         <a href="/user/avatar">设置头像</a>
         <a href="/user/logout">退出</a>
             <?php else: ?>

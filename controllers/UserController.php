@@ -6,6 +6,7 @@ use models\User;
 use models\Order;
 class UserController
 {
+
     public function uploadbig(){
         $count =  $_POST['count'];
         $i = $_POST['i'];
@@ -53,13 +54,24 @@ class UserController
             echo $root.$date.'/'.$name.'<hr>';
         } 
     }
+    
     public function album(){
         view('user.album');
     }
+    // 设置头像方法
     public function setavatar(){
         $upload = \libs\Uploader::make();
         $path = $upload->upload('avatar','avatar');
+        // 保存到user表中
+        $model = new \models\User;
+        $model->setAvatar('/uploads/'.$path);
+        // 删除原头像
+        @unlink( ROOT . 'public'.$_SESSION['avatar']);
+        // 设置新头像
+        $_SESSION['avatar'] = '/uploads/'.$path;
+        message('设置成功',2,'/blog/index');
     }
+
     public function avatar(){
         view('users.avatar');
     }
