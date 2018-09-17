@@ -4,9 +4,26 @@ namespace controllers;
 // 引入模型类
 use models\User;
 use models\Order;
+use Intervention\Image\ImageManaerStatic as Image;
 class UserController
 {
-
+    public function setavatar(){
+        // 上传新头像
+        $upload = \libs\Uploader::make();
+        $path = $upload->upload('avatar','avatar');
+        //裁切图片
+        $image = Image::make(ROOT.'public/uploads/'.$path);
+        $image->crop((int)$_ROOT['w'],(int)$_POST['h'],(int)$_POST['x'],(int)$_POST['y']);
+        // 保存时覆盖
+        $image->save(ROOT.'/public/uploads/'.$path);
+        // 保存到user表中
+        $model = new \models\User;
+        $model->setAvatar('/uploads'.$path);
+        @unlink(ROOT.'public'.$_SESSION['avatar']);
+        // 设置新头像
+        $_SESSION['avatar'] = '/uploads/'.$path;
+        message('设置成功',2,'/blog/index');
+    }
     public function uploadbig(){
         $count =  $_POST['count'];
         $i = $_POST['i'];

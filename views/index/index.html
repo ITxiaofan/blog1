@@ -42,22 +42,22 @@
             }
         }
     });
-    <? php if (config('mode') == 'dev'): ?>
-        $("#alluser").change(function () {
-            // 获取选中的值
-            var email = $(this).val()
-            if (email != '') {
-                $.ajax({
-                    type: "GET",
-                    url: "/tool/login?email=" + email,
-                    success: function (data) {
-                        // 刷新页面
-                        location.reload();
-                    }
-                })
-            }
-        });
-<? php endif; ?>
+//     <? php if (config('mode') == 'dev'): ?>
+//         $("#alluser").change(function () {
+//             // 获取选中的值
+//             var email = $(this).val()
+//             if (email != '') {
+//                 $.ajax({
+//                     type: "GET",
+//                     url: "/tool/login?email=" + email,
+//                     success: function (data) {
+//                         // 刷新页面
+//                         location.reload();
+//                     }
+//                 })
+//             }
+//         });
+// <? php endif; ?>
 
 
 </script>

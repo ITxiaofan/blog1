@@ -3,6 +3,12 @@ namespace controllers;
 
 class TestController
 {
+    public function testImage(){
+        // 打开要处理的图片
+       $image = Image::make(ROOT.'public/uploads/big.png');
+       $image->insert(ROOT.'public/uploads/water.png','top-right');
+       $image->save(ROOT . 'public/uploads/big_water.png');
+    }
     public function register()
     {
         // 注册成功
